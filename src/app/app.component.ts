@@ -11,7 +11,7 @@ import uitoolkit from "@zoom/videosdk-ui-toolkit";
 })
 export class AppComponent {
   sessionContainer: any;
-  authEndpoint = 'http://57.180.42.187/api/createMeeting'
+  authEndpoint = 'http://57.180.42.187/api/create-meeting'
   inSession: boolean = false
   config = {
     videoSDKJWT: '',
@@ -37,7 +37,7 @@ export class AppComponent {
   }
 
   getVideoSDKJWT() {
-    console.log("work")
+    console.log("work");
     this.sessionContainer = document.getElementById('sessionContainer')
 
     this.inSession = true
@@ -50,8 +50,7 @@ export class AppComponent {
         console.log(data.signature)
         this.config.videoSDKJWT = data.signature
         this.joinSession()
-      } else
-        console.log("Erro work")
+      } else {
         console.log(data)
       }
     })
@@ -60,7 +59,7 @@ export class AppComponent {
   joinSession() {
     uitoolkit.joinSession(this.sessionContainer, this.config)
 
-//    uitoolkit.onSessionClosed(this.sessionClosed)
+    uitoolkit.onSessionClosed(this.sessionClosed)
   }
 
   sessionClosed = (() => {
