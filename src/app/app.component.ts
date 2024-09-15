@@ -59,7 +59,7 @@ export class AppComponent {
   joinSession() {
     uitoolkit.joinSession(this.sessionContainer, this.config)
 
-    uitoolkit.onSessionClosed(this.sessionClosed)
+//    uitoolkit.onSessionClosed(this.sessionClosed)
   }
 
   sessionClosed = (() => {
