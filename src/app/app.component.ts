@@ -11,7 +11,7 @@ import uitoolkit from "@zoom/videosdk-ui-toolkit";
 })
 export class AppComponent {
   sessionContainer: any;
-  authEndpoint = 'http://57.180.42.187/api/create-meeting'
+  authEndpoint = 'http://57.180.42.187/api/createMeeting'
   inSession: boolean = false
   config = {
     videoSDKJWT: '',
