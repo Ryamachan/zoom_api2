@@ -50,7 +50,8 @@ export class AppComponent {
         console.log(data.signature)
         this.config.videoSDKJWT = data.signature
         this.joinSession()
-      } else {
+      } else
+        console.log("Erro work")
         console.log(data)
       }
     })
