@@ -12,7 +12,7 @@ import uitoolkit from "@zoom/videosdk-ui-toolkit";
 export class AppComponent {
 
   sessionContainer: any;
-  authEndpoint = ''
+  authEndpoint = 'http://54.238.242.153/api/create_meeting'
   inSession: boolean = false
   config = {
     videoSDKJWT: '',
@@ -34,14 +34,14 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    
+
   }
 
   getVideoSDKJWT() {
     this.sessionContainer = document.getElementById('sessionContainer')
 
     this.inSession = true
-    
+
     this.httpClient.post(this.authEndpoint, {
 	    sessionName:  this.config.sessionName,
       role: this.role,
