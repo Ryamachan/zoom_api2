@@ -51,7 +51,7 @@ export class AppComponent {
         this.config.videoSDKJWT = data.signature
         this.joinSession()
       } else
-        console.log("error work")
+        console.log("error work");
         console.log(data)
       }
     })
