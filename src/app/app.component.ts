@@ -36,23 +36,29 @@ export class AppComponent {
   }
 
   getVideoSDKJWT() {
-    this.sessionContainer = document.getElementById('sessionContainer')
-
-    this.inSession = true
+    this.sessionContainer = document.getElementById('sessionContainer');
+    this.inSession = true;
 
     this.httpClient.post(this.authEndpoint, {
-	    sessionName:  this.config.sessionName,
-      role: this.role,
-    }).subscribe((data: any) => {
-      if(data.signature) {
-        console.log(data.signature)
-        this.config.videoSDKJWT = data.signature
-        this.joinSession()
-      } else {
-        console.log(data)
-      }
-    })
-  }
+        sessionName: this.config.sessionName,
+        role: this.role,
+        userName: this.config.userName
+    }).subscribe({
+        next: (data: any) => {
+            if (data.signature) {
+                console.log(data.signature);
+                this.config.videoSDKJWT = data.signature;
+                this.joinSession();
+            } else {
+                console.error('Invalid response', data);
+            }
+        },
+        error: (error: any) => {
+            console.error('Error fetching JWT', error);
+            this.inSession = false; // セッション参加フローを終了
+        }
+    });
+}
 
   joinSession() {
     uitoolkit.joinSession(this.sessionContainer, this.config)
