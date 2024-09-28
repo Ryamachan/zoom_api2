@@ -55,7 +55,6 @@ export class AppComponent {
         },
         error: (error: any) => {
             console.error('Error fetching JWT', error);
-            this.inSession = false; // セッション参加フローを終了
         }
     });
 }
