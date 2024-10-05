@@ -34,8 +34,11 @@ export class AppComponent {
   ngOnInit() {}
 
   // CSRFトークンを取得する関数
-  getCsrfToken() {
+  /*getCsrfToken() {
     return this.httpClient.get(this.csrfCookieEndpoint, { withCredentials: true });
+  }*/
+  getCsrfToken() {
+    return this.httpClient.get(this.csrfCookieEndpoint, { withCredentials: true, responseType: 'text' });
   }
 
   // JWT署名を取得してZoomセッションに参加する関数
