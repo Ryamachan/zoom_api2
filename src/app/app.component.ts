@@ -31,7 +31,18 @@ export class AppComponent {
 
   constructor(public httpClient: HttpClient, @Inject(DOCUMENT) private document: Document) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.checkScreenSharingSupport();
+  }
+
+  // スクリーンシェアサポート確認
+  checkScreenSharingSupport() {
+    if ('getDisplayMedia' in navigator.mediaDevices) {
+      console.log('Screen sharing is supported in this browser.');
+    } else {
+      console.error('Screen sharing is not supported in this browser.');
+    }
+  }
 
   // CSRFトークンを取得する関数
   /*
