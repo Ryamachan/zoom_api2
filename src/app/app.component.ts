@@ -53,10 +53,16 @@ export class AppComponent {
       next: () => {
         // CSRFトークン取得後に署名を取得
         this.httpClient.post(this.authEndpoint, {
-          sessionName: this.config.sessionName,
-          role: this.role,
-          userName: this.config.userName
-        }, { withCredentials: true,headers: { 'Content-Type': 'application/json' } }).subscribe({
+        sessionName: this.config.sessionName,
+        role: this.role,
+        userName: this.config.userName
+      }, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-XSRF-TOKEN': this.getCookie('XSRF-TOKEN')  // クッキーからXSRF-TOKENを取得して設定
+        }
+      }).subscribe({
           next: (data: any) => {
             if (data.signature) {
               console.log(data.signature);
