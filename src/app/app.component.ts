@@ -34,13 +34,14 @@ export class AppComponent {
   ngOnInit() {}
 
   // CSRFトークンを取得する関数
-  getCsrfToken() {
-    return this.httpClient.get(this.csrfCookieEndpoint, { withCredentials: true });
-  }
   /*
   getCsrfToken() {
-    return this.httpClient.get(this.csrfCookieEndpoint, { withCredentials: true, responseType: 'text' });
+    return this.httpClient.get(this.csrfCookieEndpoint, { withCredentials: true });
   }*/
+
+  getCsrfToken() {
+    return this.httpClient.get(this.csrfCookieEndpoint, { withCredentials: true, responseType: 'text' });
+  }
 
   // JWT署名を取得してZoomセッションに参加する関数
   getVideoSDKJWT() {
@@ -55,7 +56,7 @@ export class AppComponent {
           sessionName: this.config.sessionName,
           role: this.role,
           userName: this.config.userName
-        }, { withCredentials: true }).subscribe({
+        }, { withCredentials: true,headers: { 'Content-Type': 'application/json' } }).subscribe({
           next: (data: any) => {
             if (data.signature) {
               console.log(data.signature);
