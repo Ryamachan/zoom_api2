@@ -13,7 +13,7 @@ import uitoolkit from "@zoom/videosdk-ui-toolkit";
 export class AppComponent {
   sessionContainer: any;
   authEndpoint = 'http://43.207.165.252/api/createMeeting';
-  csrfCookieEndpoint = 'http://43.207.165.252/sanctum/csrf-cookie';  // CSRFトークン取得エンドポイント
+  csrfCookieEndpoint = 'http://43.207.165.252/api/sanctum/csrf-cookie';  // CSRFトークン取得エンドポイント
   inSession: boolean = false;
   config = {
     videoSDKJWT: '',
