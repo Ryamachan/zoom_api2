@@ -38,6 +38,12 @@ export class AppComponent {
   getCsrfToken() {
     return this.httpClient.get(this.csrfCookieEndpoint, { withCredentials: true });
   }*/
+  getCookie(name: string): string | null {
+    const matches = document.cookie.match(new RegExp(
+      '(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)'
+    ));
+    return matches ? decodeURIComponent(matches[1]) : null;
+  }
 
   getCsrfToken() {
     return this.httpClient.get(this.csrfCookieEndpoint, { withCredentials: true, responseType: 'text' });
