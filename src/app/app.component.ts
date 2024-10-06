@@ -57,31 +57,37 @@ export class AppComponent {
     // CSRFトークンを取得してからAPIリクエストを送る
     this.getCsrfToken().subscribe({
       next: () => {
-        // CSRFトークン取得後に署名を取得
-        this.httpClient.post(this.authEndpoint, {
-        sessionName: this.config.sessionName,
-        role: this.role,
-        userName: this.config.userName
-      }, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-          'X-XSRF-TOKEN': this.getCookie('XSRF-TOKEN')  // クッキーからXSRF-TOKENを取得して設定
-        }
-      }).subscribe({
-          next: (data: any) => {
-            if (data.signature) {
-              console.log(data.signature);
-              this.config.videoSDKJWT = data.signature;
-              this.joinSession();
-            } else {
-              console.error('Invalid response', data);
+        const xsrfToken = this.getCookie('XSRF-TOKEN');  // XSRF-TOKENをクッキーから取得
+
+        if (xsrfToken) {
+          // CSRFトークン取得後に署名を取得
+          this.httpClient.post(this.authEndpoint, {
+            sessionName: this.config.sessionName,
+            role: this.role,
+            userName: this.config.userName
+          }, {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json',
+              'X-XSRF-TOKEN': xsrfToken  // ヘッダーにXSRF-TOKENを設定
             }
-          },
-          error: (error: any) => {
-            console.error('Error fetching JWT', error);
-          }
-        });
+          }).subscribe({
+            next: (data: any) => {
+              if (data.signature) {
+                console.log(data.signature);
+                this.config.videoSDKJWT = data.signature;
+                this.joinSession();
+              } else {
+                console.error('Invalid response', data);
+              }
+            },
+            error: (error: any) => {
+              console.error('Error fetching JWT', error);
+            }
+          });
+        } else {
+          console.error('CSRF token not found in cookies');
+        }
       },
       error: (error) => {
         console.error('Error fetching CSRF token', error);
