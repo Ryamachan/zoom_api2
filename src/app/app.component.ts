@@ -12,8 +12,8 @@ import uitoolkit from "@zoom/videosdk-ui-toolkit";
 })
 export class AppComponent {
   sessionContainer: any;
-  authEndpoint = 'http://spiral-agent.com/api/createMeeting';
-  csrfCookieEndpoint = 'http://spiral-agent.com/api/sanctum/csrf-cookie';  // CSRFトークン取得エンドポイント
+  authEndpoint = 'https://spiral-agent.com/api/createMeeting';
+  csrfCookieEndpoint = 'https://spiral-agent.com/api/sanctum/csrf-cookie';  // CSRFトークン取得エンドポイント
   inSession: boolean = false;
   config = {
     videoSDKJWT: '',
