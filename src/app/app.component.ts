@@ -17,17 +17,16 @@ export class AppComponent {
   inSession: boolean = false;
   config = {
     videoSDKJWT: '',
-    sessionName: 'test',
-    userName: 'Angular',
+    sessionName: '',
+    userName: '',
     sessionPasscode: '123',
     features: ['preview', 'video', 'audio', 'settings', 'users', 'chat', 'share'],
     options: { init: {}, audio: {}, video: {}, share: {}},
     virtualBackground: {
        allowVirtualBackground: true,
-       allowVirtualBackgroundUpload: true,
     }
   };
-  role = 1;
+  role = 0;
 
   constructor(public httpClient: HttpClient, @Inject(DOCUMENT) private document: Document) {}
 
@@ -73,9 +72,7 @@ export class AppComponent {
         if (xsrfToken) {
           // CSRFトークン取得後に署名を取得
           this.httpClient.post(this.authEndpoint, {
-            sessionName: this.config.sessionName,
             role: this.role,
-            userName: this.config.userName
           }, {
             withCredentials: true,
             headers: {
@@ -87,6 +84,8 @@ export class AppComponent {
               if (data.signature) {
                 console.log(data.signature);
                 this.config.videoSDKJWT = data.signature;
+                this.config.sessionName = data.sessionName;
+                this.config.userName = data.userName;
                 this.joinSession();
               } else {
                 console.error('Invalid response', data);
