@@ -1,20 +1,15 @@
 <main>
   <div class="video-player-container">
-      <video id="video-player" class="video-player" controls></video>
-      <div id="localVideo" class="local-video" controls></div>
-      <div class="user-info">
-          <p>testUser</p>
-      </div>
+    <video id="self-video-videotag" class="video-canvas" width="640" height="360" style="background-color:gray;"></video>
+    <div class="user-info">
+      <p>testUser</p>
+    </div>
   </div>
 
   <div class="empty-space"></div>
 
   <div class="controls">
-      <button class="control-button">Microphone</button>
-      <button class="control-button">Video</button>
-      <button class="control-button">Participants</button>
-      <button class="control-button">Chat</button>
-      <button class="control-button">Settings</button>
-      <button class="control-button">Share</button>
+    <button class="control-button" id="join-button">Join(Start) the Session</button>
+    <button class="control-button" id="leave-button">Leave(End) the Session</button>
   </div>
 </main>
