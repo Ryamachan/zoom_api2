@@ -52,7 +52,7 @@ export class SessionComponent implements OnInit {
             }
           }
           const localVideoTrack = ZoomVideo.createLocalVideoTrack(deviceId);
-
+          console.log(cameralist);
           // selfVideoがHTMLVideoElement型であることを確認
           localVideoTrack.start(selfVideo).then(() => {
             console.log('Local video track started.');
