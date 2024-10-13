@@ -13,6 +13,7 @@ export class SessionComponent implements OnInit {
   private sessionName!: string;
   private userName!: string;
   private userToken!: string;
+  private password!: string;
 
   constructor(private route: ActivatedRoute) {}
 
@@ -21,6 +22,7 @@ export class SessionComponent implements OnInit {
       this.userToken = params['config'].videoSDKJW;
       this.userName = params['config'].userName;
       this.sessionName = params['config'].sessionName; // ここに実際のミーティングIDを設定
+      this.password = params['password'].sessionName;
     });
 
     this.startVideoSession();
@@ -34,7 +36,7 @@ export class SessionComponent implements OnInit {
     this.client.init('en-US');
 
     // ミーティングに参加
-    this.client.join(this.sessionName, this.userName, this.userToken).then(() => {
+    this.client.join(this.sessionName,this.userToken,this.userName,this.password).then(() => {
       console.log('User joined the meeting');
 
       // ローカルビデオを表示
