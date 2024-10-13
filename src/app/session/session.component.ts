@@ -46,7 +46,7 @@ export class SessionComponent implements OnInit {
           const cameralist = this.stream.getCameraList();
           let deviceId = "";
           for(let i = 0; i < cameralist.length; i++){
-            if(cameralist[i]["label"].includes("front") || cameralist[i]["label"].include("Front"))
+            if(cameralist[i]["label"].includes("front") || cameralist[i]["label"].includes("Front"))
             {
               deviceId = cameralist[i]["deviceId"];
             }
