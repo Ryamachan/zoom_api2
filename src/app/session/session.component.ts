@@ -56,5 +56,6 @@ export class SessionComponent implements OnInit {
       });
     }).catch((error:any) => {
       console.error('Error initializing Zoom Video SDK:', error);
-  });
+    });
+  }
 }
