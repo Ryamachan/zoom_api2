@@ -35,7 +35,7 @@ export class SessionComponent implements OnInit {
         this.stream = this.client.getMediaStream();
         console.log('User joined the meeting');
 
-        const selfVideo = document.getElementById('self-video-videotag') as HTMLVideoElement; // 型を明示的に指定
+        const selfVideo = document.getElementById('localVideo') as HTMLVideoElement; // 型を明示的に指定
         if (!selfVideo) {
           console.error('Self video element not found.');
           return;
