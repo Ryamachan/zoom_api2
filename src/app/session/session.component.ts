@@ -19,11 +19,10 @@ export class SessionComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.userToken = params['config'].videoSDKJW;
-      this.userName = params['config'].userName;
-      this.sessionName = params['config'].sessionName; // ここに実際のミーティングIDを設定
-      this.password = params['config'].password;
-      console.table(params['config']);
+      this.userToken = params['jwt']; // jwtを取得
+      this.userName = params['name']; // nameを取得
+      this.sessionName = params['sessionName']; // sessionNameを取得
+      this.meetingId = 'YOUR_MEETING_ID'; // ここに実際のミーティングIDを設定
     });
 
     this.startVideoSession();

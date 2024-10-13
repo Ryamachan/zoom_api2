@@ -76,8 +76,12 @@ export class JoinComponent {
                 this.config.videoSDKJWT = data.signature;
                 this.config.sessionName = data.sessionName;
                 this.config.userName = data.userName;
-                this.router.navigate(['/session', { config: this.config}]);
-                
+                this.router.navigate(['/session', {
+                  jwt: this.config.videoSDKJWT,
+                  name: this.config.userName,
+                  sessionName: this.config.sessionName
+                }]);
+
               } else {
                 console.error('Invalid response', data);
               }
