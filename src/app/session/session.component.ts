@@ -43,8 +43,12 @@ export class SessionComponent implements OnInit {
         // 自分のビデオを開始する
         this.stream.startVideo().then(() => {
           console.log('Self video started successfully');
-          const localVideoTrack = ZoomVideo.createLocalVideoTrack();
           const cameralist = this.stream.getCameraList();
+          for(let i = 0; i < cameralist.length; i++){
+            //cameralist[i]["deviceId"];
+            console.log(cameralist[i]["label"]);
+          }
+          const localVideoTrack = ZoomVideo.createLocalVideoTrack(cameralist[]);
           console.log(cameralist);
           // selfVideoがHTMLVideoElement型であることを確認
           localVideoTrack.start(selfVideo).then(() => {
