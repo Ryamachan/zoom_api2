@@ -1,12 +1,12 @@
 /* session.component.css */
-.video-container {
+.video-player-container {
   position: relative;
   background-color: #fff;
   border-bottom: 1px solid #ccc;
   padding: 10px;
 }
 
-.local-video {
+.video-player {
   width: 100%;
   height: 200px; /* ビデオの高さ */
   background-color: #000; /* ビデオがない場合の色 */
