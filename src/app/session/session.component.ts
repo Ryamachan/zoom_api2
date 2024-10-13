@@ -23,7 +23,7 @@ export class SessionComponent implements OnInit {
       this.userName = params['config'].userName;
       this.sessionName = params['config'].sessionName; // ここに実際のミーティングIDを設定
       this.password = params['config'].password;
-      console.log(params['config']);
+      console.log(JSON.stringify(params['config']));
     });
 
     this.startVideoSession();
