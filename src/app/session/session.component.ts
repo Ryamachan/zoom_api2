@@ -44,7 +44,7 @@ export class SessionComponent implements OnInit {
         this.stream.startVideo().then(() => {
           console.log('Self video started successfully');
           const cameralist = this.stream.getCameraList();
-          let label = "";
+          let deviceId = "";
           for(let i = 0; i < cameralist.length; i++){
             if(cameralist[i]["label"].include("front") || cameralist[i]["label"].include("Front"))
             {
