@@ -77,6 +77,7 @@ export class JoinComponent {
                 this.config.sessionName = data.sessionName;
                 this.config.userName = data.userName;
                 this.router.navigate(['/session', { config: this.config}]);
+                
               } else {
                 console.error('Invalid response', data);
               }
