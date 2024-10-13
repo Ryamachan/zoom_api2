@@ -1,6 +1,6 @@
 <main>
-  <div class="video-player-container"> <!-- 親要素 -->
-      <video id="localVideo" class="local-video" controls></video>
+  <div class="video-player-container">
+      <video id="self-video-videotag" class="local-video" controls></video>
       <div class="user-info">
           <p>testUser</p>
       </div>
@@ -9,11 +9,21 @@
   <div class="empty-space"></div>
 
   <div class="controls">
-      <button class="control-button">Microphone</button>
-      <button class="control-button">Video</button>
-      <button class="control-button">Participants</button>
-      <button class="control-button">Chat</button>
-      <button class="control-button">Settings</button>
-      <button class="control-button">Share</button>
+      <button class="control-button" id="microphone-button">Microphone</button>
+      <button class="control-button" id="video-button">Video</button>
+      <button class="control-button" id="chat-button">Chat</button>
+      <button class="control-button" id="settings-button">Settings</button>
+  </div>
+
+  <div class="chat-container" style="display:none;">
+      <textarea id="chat-input" placeholder="Type your message..."></textarea>
+      <button class="control-button" id="send-button">Send</button>
+      <div id="chat-output"></div>
+  </div>
+
+  <div id="settings-modal" style="display:none;">
+      <h3>Settings</h3>
+      <!-- 設定内容をここに追加 -->
+      <button id="close-settings-button">Close</button>
   </div>
 </main>
