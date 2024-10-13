@@ -30,42 +30,35 @@ export class SessionComponent implements OnInit {
 
 
   startVideoSession() {
-    this.client = ZoomVideo.createClient(); // クライアントの作成
-    this.client.init('en-US').then(() => {
-      console.log('Zoom Video SDK initialized');
+      this.client = ZoomVideo.createClient(); // クライアントの作成
+      this.client.init('en-US').then(() => {
+          console.log('Zoom Video SDK initialized');
 
-      this.client.join(this.sessionName, this.userToken, this.userName).then(() => {
-        this.stream = this.client.getMediaStream();
-        console.log('User joined the meeting');
+          this.client.join(this.sessionName, this.userToken, this.userName).then(() => {
+              this.stream = this.client.getMediaStream();
+              console.log('User joined the meeting');
 
-        const localVideoElement = document.getElementById('localVideo'); // ローカルビデオ要素を取得
+              const selfVideo = document.getElementById('localVideo');
+              if (!selfVideo) {
+                  console.error('Self video element not found.');
+                  return;
+              }
 
-        // カメラを開始する前に、ビデオストリームを取得
-        this.stream.startVideo().then(() => {
-          console.log('Video started successfully');
+              // 自分のビデオを開始する
+              this.stream.startVideo().then(() => {
+                  console.log('Self video started successfully');
+                  const localVideoTrack = ZoomVideo.createLocalVideoTrack();
+                  localVideoTrack.start(selfVideo); // 自分のビデオを表示
+              }).catch((error) => {
+                  console.error('Error starting self video:', error);
+              });
 
-          const RESOLUTION = { width: 1280, height: 720 }; // 解像度を定義
-
-          this.stream.attachVideo(this.client.getCurrentUserInfo().userId, RESOLUTION).then((userVideo: HTMLVideoElement) => {
-            // ローカルビデオ要素にストリームを追加
-            if (localVideoElement) {
-              localVideoElement.appendChild(userVideo);
-            } else {
-              console.error('Local video element not found.');
-            }
-          }).catch((error:any) => {
-            console.error('Error attaching video:', error);
+          }).catch((error) => {
+              console.error('Error joining meeting:', error);
           });
-        }).catch((error: any) => {
-          console.error('Error starting video:', error);
-        });
-
-      }).catch((error: any) => {
-        console.error('Error joining meeting:', error);
+      }).catch((error) => {
+          console.error('Error initializing Zoom Video SDK:', error);
       });
-    }).catch((error: any) => {
-      console.error('Error initializing Zoom Video SDK:', error);
-    });
   }
 }
 
