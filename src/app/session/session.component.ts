@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import ZoomVideo from '@zoom/videosdk'; // ZoomVideoのインポートを追加
+import  ZoomVideo  from '@zoom/videosdk'; // ZoomVideoのインポートを追加
 
 
 @Component({
