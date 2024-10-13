@@ -48,7 +48,7 @@ export class SessionComponent implements OnInit {
           for(let i = 0; i < cameralist.length; i++){
             if(cameralist[i]["label"].include("front") || cameralist[i]["label"].include("Front"))
             {
-              deviceId = console.log(cameralist[i]["deviceId"]);
+              deviceId = cameralist[i]["deviceId"];
             }
           }
           const localVideoTrack = ZoomVideo.createLocalVideoTrack(deviceId);
