@@ -42,7 +42,7 @@ export class SessionComponent implements OnInit {
         // ここでカメラを開始する前に、ビデオストリームを取得
         this.client.startVideo().then(() => {
           console.log('Video started successfully');
-        }).catch((error) => {
+        }).catch((error:any) => {
           console.error('Error starting video:', error);
         });
 
@@ -53,10 +53,10 @@ export class SessionComponent implements OnInit {
             stream.play(localVideoElement);
           }
         });
-      }).catch((error) => {
+      }).catch((error:any) => {
         console.error('Error joining meeting:', error);
       });
-    }).catch((error) => {
+    }).catch((error:any) => {
       console.error('Error initializing Zoom Video SDK:', error);
     });
   }
