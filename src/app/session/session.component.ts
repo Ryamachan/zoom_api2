@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import  ZoomVideo  from '@zoom/videosdk'; // ZoomVideoのインポートを追加
-
+import ZoomVideo from '@zoom/videosdk'; // ZoomVideoのインポートを追加
 
 @Component({
   selector: 'app-session',
@@ -13,7 +12,6 @@ export class SessionComponent implements OnInit {
   private sessionName!: string;
   private userName!: string;
   private userToken!: string;
-  private password!: string;
   private stream!: any;
 
   constructor(private route: ActivatedRoute) {}
@@ -28,39 +26,44 @@ export class SessionComponent implements OnInit {
     this.startVideoSession();
   }
 
-
   startVideoSession() {
-      this.client = ZoomVideo.createClient(); // クライアントの作成
-      this.client.init('en-US').then(() => {
-          console.log('Zoom Video SDK initialized');
+    this.client = ZoomVideo.createClient(); // クライアントの作成
+    this.client.init('en-US').then(() => {
+      console.log('Zoom Video SDK initialized');
 
-          this.client.join(this.sessionName, this.userToken, this.userName).then(() => {
-              this.stream = this.client.getMediaStream();
-              console.log('User joined the meeting');
+      this.client.join(this.sessionName, this.userToken, this.userName).then(() => {
+        this.stream = this.client.getMediaStream();
+        console.log('User joined the meeting');
 
-              const selfVideo = document.getElementById('localVideo');
-              if (!selfVideo) {
-                  console.error('Self video element not found.');
-                  return;
-              }
+        const selfVideo = document.getElementById('self-video-videotag') as HTMLVideoElement; // 型を明示的に指定
+        if (!selfVideo) {
+          console.error('Self video element not found.');
+          return;
+        }
 
-              // 自分のビデオを開始する
-              this.stream.startVideo().then(() => {
-                  console.log('Self video started successfully');
-                  const localVideoTrack = ZoomVideo.createLocalVideoTrack();
-                  localVideoTrack.start(selfVideo); // 自分のビデオを表示
-              }).catch((error:any) => {
-                  console.error('Error starting self video:', error);
-              });
+        // 自分のビデオを開始する
+        this.stream.startVideo().then(() => {
+          console.log('Self video started successfully');
+          const localVideoTrack = ZoomVideo.createLocalVideoTrack();
 
-          }).catch((error:any) => {
-              console.error('Error joining meeting:', error);
+          // selfVideoがHTMLVideoElement型であることを確認
+          localVideoTrack.start(selfVideo).then(() => {
+            console.log('Local video track started.');
+          }).catch((error: any) => {
+            console.error('Error starting local video track:', error);
           });
-      }).catch((error:any) => {
-          console.error('Error initializing Zoom Video SDK:', error);
+        }).catch((error: any) => {
+          console.error('Error starting self video:', error);
+        });
+      }).catch((error: any) => {
+        console.error('Error joining meeting:', error);
       });
+    }).catch((error: any) => {
+      console.error('Error initializing Zoom Video SDK:', error);
+    });
   }
 }
+
 
 // イベントリスナーを設定\
 /*
