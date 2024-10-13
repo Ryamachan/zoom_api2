@@ -1,0 +1,44 @@
+/* session.component.css */
+.video-container {
+  position: relative;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}
+
+.local-video {
+  width: 100%;
+  height: 200px; /* ビデオの高さ */
+  background-color: #000; /* ビデオがない場合の色 */
+}
+
+.user-info {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: #fff;
+}
+
+.empty-space {
+  flex-grow: 1; /* 中央の空白部分を拡張 */
+  background-color: #e0e0e0; /* 灰色の背景 */
+}
+
+.controls {
+  display: flex;
+  justify-content: space-around;
+  background-color: #007bff;
+  padding: 10px 0;
+}
+
+.control-button {
+  background-color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.control-button:hover {
+  background-color: #e0e0e0;
+}
