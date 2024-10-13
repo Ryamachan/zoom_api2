@@ -40,13 +40,11 @@ export class SessionComponent implements OnInit {
           console.error('Self video element not found.');
           return;
         }
-
         // 自分のビデオを開始する
         this.stream.startVideo().then(() => {
           console.log('Self video started successfully');
-          const localVideoTrack = ZoomVideo.createLocalVideoTrack({
-                    cameraId: 'front', // フロントカメラを指定
-                });
+          const localVideoTrack = ZoomVideo.createLocalVideoTrack();
+          localVideoTrack.switchCamera(videoDevices[1].deviceId)
 
           // selfVideoがHTMLVideoElement型であることを確認
           localVideoTrack.start(selfVideo).then(() => {
