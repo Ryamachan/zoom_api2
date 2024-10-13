@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DOCUMENT } from '@angular/common';
+import ZoomVideo from '@zoom/videosdk'
 
 import uitoolkit from "@zoom/videosdk-ui-toolkit";
 
@@ -104,10 +105,23 @@ export class AppComponent {
       }
     });
   }
+  joinSession()  {
+    const client = ZoomVideo.createClient()
+    client.init('en-US', `CDN`)
 
-  joinSession() {
-    uitoolkit.joinSession(this.sessionContainer, this.config);
+    let stream
+    client.join(this.config.sessionName, this.config.videoSDKJWT, this.config.userName, '123').then(() => {
+      stream = client.getMediaStream()
+    }).catch((error) => {
+      console.log(error)
+    });
   }
+
+/*  joinSession() {
+    uitoolkit.joinSession(this.sessionContainer, this.config);
+  }*/
+
+
 
   sessionClosed = () => {
     console.log('session closed');
