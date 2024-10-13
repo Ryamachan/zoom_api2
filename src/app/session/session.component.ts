@@ -51,10 +51,10 @@ export class SessionComponent implements OnInit {
                     stream.play(localVideoElement);
                 }
             });
-        }).catch((error) => {
+        }).catch((error:any) => {
             console.error('Error joining meeting:', error);
         });
-    }).catch((error) => {
+    }).catch((error:any) => {
         console.error('Error initializing Zoom Video SDK:', error);
     });
   }
