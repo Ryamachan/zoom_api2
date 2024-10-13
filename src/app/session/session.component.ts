@@ -53,12 +53,21 @@ export class SessionComponent implements OnInit {
           }
           const localVideoTrack = ZoomVideo.createLocalVideoTrack(deviceId);
           console.log(cameralist);
-          // selfVideoがHTMLVideoElement型であることを確認
           localVideoTrack.start(selfVideo).then(() => {
             console.log('Local video track started.');
           }).catch((error: any) => {
             console.error('Error starting local video track:', error);
           });
+          
+          // オーディオトラックを作成して開始する
+          const localAudioTrack = ZoomVideo.createLocalAudioTrack();
+          localAudioTrack.start().then(() => {
+              console.log('Local audio track started successfully.');
+              this.stream.startAudio(); // オーディオをオンにする
+          }).catch((error: any) => {
+              console.error('Error starting local audio track:', error);
+          });
+
         }).catch((error: any) => {
           console.error('Error starting self video:', error);
         });
