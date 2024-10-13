@@ -49,14 +49,14 @@ export class SessionComponent implements OnInit {
                   console.log('Self video started successfully');
                   const localVideoTrack = ZoomVideo.createLocalVideoTrack();
                   localVideoTrack.start(selfVideo); // 自分のビデオを表示
-              }).catch((error) => {
+              }).catch((error:any) => {
                   console.error('Error starting self video:', error);
               });
 
-          }).catch((error) => {
+          }).catch((error:any) => {
               console.error('Error joining meeting:', error);
           });
-      }).catch((error) => {
+      }).catch((error:any) => {
           console.error('Error initializing Zoom Video SDK:', error);
       });
   }
