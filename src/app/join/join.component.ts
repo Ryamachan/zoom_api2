@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http'; // HttpClientのインポートを追加
 import { Router } from '@angular/router';
+import { DOCUMENT } from '@angular/common'; // DOCUMENTのインポートを追加
+import { Inject } from '@angular/core';
 
 @Component({
   selector: 'app-join',
   templateUrl: './join.component.html',
   styleUrls: ['./join.component.css'],
 })
+
 export class JoinComponent {
   sessionContainer: any;
   authEndpoint = 'https://spiral-agent.com/api/createMeeting';

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import ZoomVideo from '@zoom/videosdk'; // ZoomVideoのインポートを追加
+
 
 @Component({
   selector: 'app-session',
@@ -7,10 +9,10 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./session.component.css'],
 })
 export class SessionComponent implements OnInit {
-  private client: any; // Zoom Video SDKクライアント
-  private meetingId: string;
-  private userName: string;
-  private userToken: string;
+  private client!: any; // Zoom Video SDKクライアント
+  private sessionName!: string;
+  private userName!: string;
+  private userToken!: string;
 
   constructor(private route: ActivatedRoute) {}
 
@@ -40,13 +42,13 @@ export class SessionComponent implements OnInit {
       this.client.startVideo();
 
       // イベントリスナーを設定
-      this.client.on('stream-added', (evt) => {
+      this.client.on('stream-added', (evt: any) => {
         const stream = evt.stream;
         if (stream.getType() === 'local') {
           stream.play(localVideoElement);
         }
       });
-    }).catch((error) => {
+    }).catch((error: any) => { // any型を指定
       console.error('Error joining meeting:', error);
     });
   }
