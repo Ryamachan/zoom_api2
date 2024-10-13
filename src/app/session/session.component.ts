@@ -56,13 +56,6 @@ export class SessionComponent implements OnInit {
           // selfVideoがHTMLVideoElement型であることを確認
           localVideoTrack.start(selfVideo).then(() => {
             console.log('Local video track started.');
-            if (error.type === 'VIDEO_CAMERA_IS_TAKEN') {
-                // カメラが使用中の場合の処理
-                console.log('Camera is currently in use. Retrying...');
-                setTimeout(() => {
-                    startSelfVideo(); // 再試行
-                }, 3000); // 3秒後に再試行
-            }
           }).catch((error: any) => {
             console.error('Error starting local video track:', error);
           });
