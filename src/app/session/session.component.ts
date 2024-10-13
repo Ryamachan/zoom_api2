@@ -14,6 +14,9 @@ export class SessionComponent implements OnInit {
   private userToken!: string;
   private stream!: any;
 
+  private isAudioMuted: boolean = false; // オーディオのミュート状態を管理
+  private isVideoOn: boolean = true; // ビデオの状態を管理
+
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -58,7 +61,7 @@ export class SessionComponent implements OnInit {
           }).catch((error: any) => {
             console.error('Error starting local video track:', error);
           });
-          
+
           // オーディオトラックを作成して開始する
           const localAudioTrack = ZoomVideo.createLocalAudioTrack();
           localAudioTrack.start().then(() => {
@@ -77,6 +80,83 @@ export class SessionComponent implements OnInit {
     }).catch((error: any) => {
       console.error('Error initializing Zoom Video SDK:', error);
     });
+      // ボタンにイベントリスナーを追加
+     document.getElementById('microphone-button')?.addEventListener('click', () => this.toggleAudio());
+     document.getElementById('video-button')?.addEventListener('click', () => this.toggleVideo());
+     document.getElementById('send-button')?.addEventListener('click', () => this.sendMessage());
+     document.getElementById('settings-button')?.addEventListener('click', () => this.showSettings());
+     document.getElementById('close-settings-button')?.addEventListener('click', () => this.closeSettings());
+  }
+
+  toggleAudio() {
+    if (this.isAudioMuted) {
+      this.stream.startAudio().then(() => {
+        console.log('Audio started');
+        this.isAudioMuted = false;
+        (document.getElementById('microphone-button') as HTMLButtonElement).innerText = 'Mute';
+      }).catch((error: any) => {
+        console.error('Error starting audio:', error);
+      });
+    } else {
+      this.stream.stopAudio().then(() => {
+        console.log('Audio stopped');
+        this.isAudioMuted = true;
+        (document.getElementById('microphone-button') as HTMLButtonElement).innerText = 'Unmute';
+      }).catch((error: any) => {
+        console.error('Error stopping audio:', error);
+      });
+    }
+  }
+
+  toggleVideo() {
+    if (this.isVideoOn) {
+      this.stream.stopVideo().then(() => {
+        console.log('Video stopped');
+        this.isVideoOn = false;
+        (document.getElementById('video-button') as HTMLButtonElement).innerText = 'Start Video';
+      }).catch((error: any) => {
+        console.error('Error stopping video:', error);
+      });
+    } else {
+      this.stream.startVideo().then(() => {
+        console.log('Video started');
+        this.isVideoOn = true;
+        (document.getElementById('video-button') as HTMLButtonElement).innerText = 'Stop Video';
+      }).catch((error: any) => {
+        console.error('Error starting video:', error);
+      });
+    }
+  }
+
+  sendMessage() {
+    const message = (document.getElementById('chat-input') as HTMLTextAreaElement).value;
+    if (message) {
+      // メッセージを送信するロジックを実装（サーバー経由など）
+      console.log('Sending message:', message);
+
+      // チャットの出力エリアに追加
+      const chatOutput = document.getElementById('chat-output');
+      if (chatOutput) {
+        chatOutput.innerHTML += `<p>${message}</p>`;
+      }
+
+      // 入力をクリア
+      (document.getElementById('chat-input') as HTMLTextAreaElement).value = '';
+    }
+  }
+
+  showSettings() {
+    const settingsModal = document.getElementById('settings-modal');
+    if (settingsModal) {
+      settingsModal.style.display = 'block'; // モーダルを表示
+    }
+  }
+
+  closeSettings() {
+    const settingsModal = document.getElementById('settings-modal');
+    if (settingsModal) {
+      settingsModal.style.display = 'none'; // モーダルを非表示
+    }
   }
 }
 
