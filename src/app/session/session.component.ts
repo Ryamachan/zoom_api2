@@ -32,28 +32,30 @@ export class SessionComponent implements OnInit {
 
   startVideoSession() {
     // Zoom Video SDKのクライアントを作成
-    this.client = ZoomVideo.createClient();
+    this.client = ZoomVideo.createClient(); // ここでクライアントを作成
 
     // SDKの初期化
-    this.client.init('en-US');
+    this.client.init('en-US').then(() => {
+        // ミーティングに参加
+        this.client.join(this.meetingId, this.userName, this.userToken).then(() => {
+            console.log('User joined the meeting');
 
-    // ミーティングに参加
-    this.client.join(this.sessionName,this.userToken,this.userName,this.password).then(() => {
-      console.log('User joined the meeting');
+            // ローカルビデオを表示
+            const localVideoElement = document.getElementById('localVideo');
+            this.client.startVideo(); // ここでビデオを開始
 
-      // ローカルビデオを表示
-      const localVideoElement = document.getElementById('localVideo');
-      this.client.startVideo();
-
-      // イベントリスナーを設定
-      this.client.on('stream-added', (evt: any) => {
-        const stream = evt.stream;
-        if (stream.getType() === 'local') {
-          stream.play(localVideoElement);
-        }
-      });
-    }).catch((error: any) => { // any型を指定
-      console.error('Error joining meeting:', error);
+            // イベントリスナーを設定
+            this.client.on('stream-added', (evt: any) => {
+                const stream = evt.stream;
+                if (stream.getType() === 'local') {
+                    stream.play(localVideoElement);
+                }
+            });
+        }).catch((error) => {
+            console.error('Error joining meeting:', error);
+        });
+    }).catch((error) => {
+        console.error('Error initializing Zoom Video SDK:', error);
     });
   }
 }
