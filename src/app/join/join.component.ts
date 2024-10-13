@@ -50,7 +50,7 @@ export class JoinComponent {
   }
 
 
-  getVideoSDKJWT() {
+  joinSession() {
     this.sessionContainer = this.document.getElementById('sessionContainer');
     this.inSession = true;
 
@@ -76,6 +76,7 @@ export class JoinComponent {
                 this.config.videoSDKJWT = data.signature;
                 this.config.sessionName = data.sessionName;
                 this.config.userName = data.userName;
+                this.router.navigate(['/session', { config: this.config}]);
               } else {
                 console.error('Invalid response', data);
               }
@@ -94,10 +95,10 @@ export class JoinComponent {
     });
   }
 
-  joinSession() {
+  /*joinSession() {
     // JWTトークンを取得するロジックをここに実装
     this.getVideoSDKJWT()
     // JWTが取得できたらセッション画面に遷移
     this.router.navigate(['/session', { config: this.config}]);
-  }
+  }*/
 }
