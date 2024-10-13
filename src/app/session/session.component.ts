@@ -22,7 +22,9 @@ export class SessionComponent implements OnInit {
       this.userToken = params['jwt']; // jwtを取得
       this.userName = params['name']; // nameを取得
       this.sessionName = params['sessionName']; // sessionNameを取得
-      this.meetingId = 'YOUR_MEETING_ID'; // ここに実際のミーティングIDを設定
+      console.log(this.userToken);
+      console.log(this.userName);
+      console.log(this.sessionName);
     });
 
     this.startVideoSession();
