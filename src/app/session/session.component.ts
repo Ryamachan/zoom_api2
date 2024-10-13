@@ -15,7 +15,6 @@ export class SessionComponent implements OnInit {
   private userToken!: string;
   private password!: string;
   private stream!: any;
-  private resolution = { width: 1280, height: 720 };
 
   constructor(private route: ActivatedRoute) {}
 
@@ -39,18 +38,20 @@ export class SessionComponent implements OnInit {
         this.stream = this.client.getMediaStream();
         console.log('User joined the meeting');
 
-        const localVideoElement = document.getElementById('localVideo');
+        const localVideoElement = document.getElementById('localVideo'); // ローカルビデオ要素を取得
 
         // カメラを開始する前に、ビデオストリームを取得
         this.stream.startVideo().then(() => {
           console.log('Video started successfully');
 
-          this.stream.attachVideo(this.client.getCurrentUserInfo().userId, this.resolution).then((userVideo: HTMLVideoElement) => {
-            const videoContainer = document.querySelector('video-player-container');
-            if (videoContainer) {
-              videoContainer.appendChild(userVideo);
+          const RESOLUTION = { width: 1280, height: 720 }; // 解像度を定義
+
+          this.stream.attachVideo(this.client.getCurrentUserInfo().userId, RESOLUTION).then((userVideo: HTMLVideoElement) => {
+            // ローカルビデオ要素にストリームを追加
+            if (localVideoElement) {
+              localVideoElement.appendChild(userVideo);
             } else {
-              console.error('Video player container not found.');
+              console.error('Local video element not found.');
             }
           }).catch((error:any) => {
             console.error('Error attaching video:', error);
