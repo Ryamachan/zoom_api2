@@ -37,7 +37,7 @@ export class SessionComponent implements OnInit {
     // SDKの初期化
     this.client.init('en-US').then(() => {
         // ミーティングに参加
-        this.client.join(this.meetingId, this.userName, this.userToken).then(() => {
+        this.client.join(this.sessionName, this.userToken, this.userName).then(() => {
             console.log('User joined the meeting');
 
             // ローカルビデオを表示
