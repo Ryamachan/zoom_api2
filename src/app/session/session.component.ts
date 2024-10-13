@@ -22,7 +22,7 @@ export class SessionComponent implements OnInit {
       this.userToken = params['config'].videoSDKJW;
       this.userName = params['config'].userName;
       this.sessionName = params['config'].sessionName; // ここに実際のミーティングIDを設定
-      this.password = params['password'].sessionName;
+      this.password = params['config'].password;
     });
 
     this.startVideoSession();
