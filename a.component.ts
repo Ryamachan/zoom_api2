@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+-app.component.ts
+import { Component, Inject } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { DOCUMENT } from '@angular/common';
+
+import uitoolkit from "@zoom/videosdk-ui-toolkit";
+
 
 @Component({
-  selector: 'app-join',
-  templateUrl: './join.component.html',
-  styleUrls: ['./join.component.css'],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
-export class JoinComponent {
+export class AppComponent {
   sessionContainer: any;
   authEndpoint = 'https://spiral-agent.com/api/createMeeting';
   csrfCookieEndpoint = 'https://spiral-agent.com/api/sanctum/csrf-cookie';  // CSRFトークン取得エンドポイント
@@ -16,10 +21,15 @@ export class JoinComponent {
     sessionName: '',
     userName: '',
     sessionPasscode: '123',
+    features: ['preview', 'video', 'audio', 'settings', 'users', 'chat', 'share'],
+    options: { init: {}, audio: {}, video: {}, share: {}},
+    virtualBackground: {
+       allowVirtualBackground: true,
+    }
   };
   role = 0;
 
-  constructor(public httpClient: HttpClient, @Inject(DOCUMENT) private document: Document, private router: Router) {}
+  constructor(public httpClient: HttpClient, @Inject(DOCUMENT) private document: Document) {}
 
   ngOnInit() {
     this.checkScreenSharingSupport();
@@ -34,6 +44,11 @@ export class JoinComponent {
     }
   }
 
+  // CSRFトークンを取得する関数
+  /*
+  getCsrfToken() {
+    return this.httpClient.get(this.csrfCookieEndpoint, { withCredentials: true });
+  }*/
   getCookie(name: string): string | null {
     const matches = document.cookie.match(new RegExp(
       '(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)'
@@ -45,7 +60,7 @@ export class JoinComponent {
     return this.httpClient.get(this.csrfCookieEndpoint, { withCredentials: true, responseType: 'text' });
   }
 
-
+  // JWT署名を取得してZoomセッションに参加する関数
   getVideoSDKJWT() {
     this.sessionContainer = this.document.getElementById('sessionContainer');
     this.inSession = true;
@@ -72,6 +87,7 @@ export class JoinComponent {
                 this.config.videoSDKJWT = data.signature;
                 this.config.sessionName = data.sessionName;
                 this.config.userName = data.userName;
+                this.joinSession();
               } else {
                 console.error('Invalid response', data);
               }
@@ -91,9 +107,12 @@ export class JoinComponent {
   }
 
   joinSession() {
-    // JWTトークンを取得するロジックをここに実装
-    this.getVideoSDKJWT()
-    // JWTが取得できたらセッション画面に遷移
-    this.router.navigate(['/session', { config: this.config}]);
+    uitoolkit.joinSession(this.sessionContainer, this.config);
   }
+
+  sessionClosed = () => {
+    console.log('session closed');
+    uitoolkit.closeSession(this.sessionContainer);
+    this.inSession = false;
+  };
 }
