@@ -2,11 +2,15 @@
   <div class="video-player-container">
       <video id="localVideo" class="local-video" controls></video>
       <div class="user-info">
-          <p>testUser</p>
       </div>
   </div>
 
-  <div class="empty-space"></div>
+  <div class="empty-space">
+    <video id="laravel-video" controls>
+        <source src="https://spiral-agent.com/api/getVideo" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+  </div>
 
   <div class="controls">
       <button class="control-button" id="microphone-button">Microphone</button>

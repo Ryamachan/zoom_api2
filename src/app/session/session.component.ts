@@ -27,8 +27,16 @@ export class SessionComponent implements OnInit {
     });
 
     this.startVideoSession();
+    this.loadVideo(); // 動画をロードするメソッドを追加
   }
 
+  loadVideo() {
+    const videoElement = document.getElementById('laravel-video') as HTMLVideoElement;
+    if (videoElement) {
+      videoElement.src = 'https://spiral-agent.com/api/getVideo'; // URLを設定
+      videoElement.load(); // 動画をロード
+    }
+  }
   startVideoSession() {
     this.client = ZoomVideo.createClient(); // クライアントの作成
     this.client.init('en-US').then(() => {
