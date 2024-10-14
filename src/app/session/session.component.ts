@@ -42,8 +42,17 @@ export class SessionComponent implements OnInit {
   loadVideo() {
     const videoElement = document.getElementById('laravel-video') as HTMLVideoElement;
     if (videoElement) {
-      videoElement.src = 'https://spiral-agent.com/api/getVideo'; // URLを設定
+      videoElement.src = 'https://spiral-agent.com/api/getVideo?video=example.mp4'; // 初期URLを設定
       videoElement.load(); // 動画をロード
+    }
+  }
+
+  loadNextVideo() {
+    const videoElement = document.getElementById('laravel-video') as HTMLVideoElement;
+    if (videoElement) {
+      videoElement.src = 'https://spiral-agent.com/api/getVideo?video=example2.mp4'; // 次のビデオのURLを設定
+      videoElement.load(); // 動画をロード
+      videoElement.play(); // 自動再生
     }
   }
 
