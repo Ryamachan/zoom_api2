@@ -80,8 +80,9 @@ export class SessionComponent implements OnInit {
           });
 
           // cloud recording でレコードを開始する
-          const cloudRecording = this.client.getRecordingClient()
-
+          const cloudRecording = this.client.getRecordingClient();
+          cloudRecording.startCloudRecording();
+          
         }).catch((error: any) => {
           console.error('Error starting self video:', error);
         });
