@@ -29,4 +29,10 @@
       <!-- 設定内容をここに追加 -->
       <button id="close-settings-button">Close</button>
   </div>
+  <script>
+  // 動画の読み込みが完了したときの処理
+  document.getElementById('laravel-video').addEventListener('loadeddata', function() {
+      this.play(); // 自動的に動画を再生
+  });
+  </script>
 </main>
