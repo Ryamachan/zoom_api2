@@ -112,7 +112,7 @@ export class SessionComponent implements OnInit {
 
   leaveSession = () => {
     if (this.client) {
-      this.client.leave(); // セッションを終了
+      this.client.leave(true); // セッションを終了
       console.log('User left the meeting');
     }
   }
