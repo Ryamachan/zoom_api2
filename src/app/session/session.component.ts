@@ -28,7 +28,16 @@ export class SessionComponent implements OnInit {
 
     this.startVideoSession();
     this.loadVideo(); // 動画をロードするメソッドを追加
+
+    // ブラウザバックやウィンドウ閉じた時の処理
+    window.addEventListener('beforeunload', this.leaveSession);
   }
+
+  ngOnDestroy() {
+    // コンポーネントが破棄される際にクリーンアップ
+    window.removeEventListener('beforeunload', this.leaveSession);
+  }
+
 
   loadVideo() {
     const videoElement = document.getElementById('laravel-video') as HTMLVideoElement;
@@ -37,6 +46,7 @@ export class SessionComponent implements OnInit {
       videoElement.load(); // 動画をロード
     }
   }
+
   startVideoSession() {
     this.client = ZoomVideo.createClient(); // クライアントの作成
     this.client.init('en-US').then(() => {
@@ -82,7 +92,7 @@ export class SessionComponent implements OnInit {
           // cloud recording でレコードを開始する
           const cloudRecording = this.client.getRecordingClient();
           cloudRecording.startCloudRecording();
-          
+
         }).catch((error: any) => {
           console.error('Error starting self video:', error);
         });
@@ -98,6 +108,13 @@ export class SessionComponent implements OnInit {
      document.getElementById('send-button')?.addEventListener('click', () => this.sendMessage());
      document.getElementById('settings-button')?.addEventListener('click', () => this.showSettings());
      document.getElementById('close-settings-button')?.addEventListener('click', () => this.closeSettings());
+  }
+
+  leaveSession = () => {
+    if (this.client) {
+      this.client.leave(); // セッションを終了
+      console.log('User left the meeting');
+    }
   }
 
   toggleAudio() {
