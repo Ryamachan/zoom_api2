@@ -21,7 +21,7 @@ export class JoinComponent {
     userName: '',
     sessionPasscode: '123',
   };
-  role = 0;
+  role = 1;
 
   constructor(public httpClient: HttpClient, @Inject(DOCUMENT) private document: Document, private router: Router) {}
 
