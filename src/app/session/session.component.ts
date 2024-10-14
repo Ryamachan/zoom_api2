@@ -79,6 +79,9 @@ export class SessionComponent implements OnInit {
               console.error('Error starting local audio track:', error);
           });
 
+          // cloud recording でレコードを開始する
+          const cloudRecording = this.client.getRecordingClient()
+
         }).catch((error: any) => {
           console.error('Error starting self video:', error);
         });
