@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import ZoomVideo from '@zoom/videosdk'; // ZoomVideoのインポートを追加
 
@@ -7,7 +7,7 @@ import ZoomVideo from '@zoom/videosdk'; // ZoomVideoのインポートを追加
   templateUrl: './session.component.html',
   styleUrls: ['./session.component.css'],
 })
-export class SessionComponent implements OnInit {
+export class SessionComponent {
   @ViewChild('cameraVideo') cameraVideo!: ElementRef<HTMLVideoElement>;
   @ViewChild('uploadedVideo') uploadedVideo!: ElementRef<HTMLVideoElement>;
 

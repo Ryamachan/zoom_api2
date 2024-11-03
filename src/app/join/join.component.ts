@@ -26,7 +26,6 @@ export class JoinComponent {
   constructor(public httpClient: HttpClient, @Inject(DOCUMENT) private document: Document, private router: Router) {}
 
   ngOnInit() {
-    this.checkScreenSharingSupport();
   }
 
 
@@ -44,13 +43,5 @@ export class JoinComponent {
 
   joinSession() {
       this.router.navigate(['/session']);
-    });
-  }
-
-  /*joinSession() {
-    // JWTトークンを取得するロジックをここに実装
-    this.getVideoSDKJWT()
-    // JWTが取得できたらセッション画面に遷移
-    this.router.navigate(['/session', { config: this.config}]);
-  }*/
+  };
 }
