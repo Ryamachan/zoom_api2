@@ -1,38 +1,16 @@
 <main>
-  <div class="video-player-container">
-      <video id="localVideo" class="local-video" controls></video>
-      <video id="laravel-video" controls>
-          <source src="https://spiral-agent.com/api/getVideo?video=example.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-      </video>
+  <div class="container">
+    <div class="video-container">
+      <video #cameraVideo autoplay muted></video>
+      <span>録画画面(内カメラ)</span>
+    </div>
+    <div class="video-container">
+      <video #uploadedVideo controls></video>
+      <span>ビデオ</span>
+    </div>
   </div>
-
-  <div class="empty-space">
-    <button class="control-button" id="next-video-button">次のビデオへ</button> <!-- 次のビデオへボタン -->
-  </div>
-
   <div class="controls">
-      <button class="control-button" id="microphone-button">Microphone</button>
-      <button class="control-button" id="video-button">Video</button>
-      <button class="control-button" id="chat-button">Chat</button>
-      <button class="control-button" id="settings-button">Settings</button>
+    <button (click)="startRecording()">録画開始ボタン</button>
+    <button (click)="stopRecording()">録画停止ボタン</button>
   </div>
-
-  <div class="chat-container" style="display:none;">
-      <textarea id="chat-input" placeholder="Type your message..."></textarea>
-      <button class="control-button" id="send-button">Send</button>
-      <div id="chat-output"></div>
-  </div>
-
-  <div id="settings-modal" style="display:none;">
-      <h3>Settings</h3>
-      <!-- 設定内容をここに追加 -->
-      <button id="close-settings-button">Close</button>
-  </div>
-  <script>
-  // 動画の読み込みが完了したときの処理
-  document.getElementById('laravel-video').addEventListener('loadeddata', function() {
-      this.play(); // 自動的に動画を再生
-  });
-  </script>
 </main>

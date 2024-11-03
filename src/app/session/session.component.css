@@ -1,52 +1,26 @@
-/* session.component.css */
-.video-player-container {
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.video-container {
+  width: 45%;
   position: relative;
-  background-color: #fff;
-  border-bottom: 1px solid #ccc;
-  padding: 10px;
-  display:flex;
 }
 
-.video-player {
+video {
   width: 100%;
-  height: 200px; /* ビデオの高さ */
-  background-color: #000; /* ビデオがない場合の色 */
-}
-
-.user-info {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  color: #fff;
-}
-
-.empty-space {
-  flex-grow: 1; /* 中央の空白部分を拡張 */
-  background-color: #e0e0e0; /* 灰色の背景 */
+  height: auto;
 }
 
 .controls {
-  display: flex;
-  justify-content: center; /* 中央揃えに変更 */
-  padding: 15px 20px; /* パディングを調整 */
-  border-radius: 8px; /* 丸みを持たせる */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 影を追加 */
+  text-align: center;
+  margin-top: 20px;
 }
 
-.control-button {
-  background-color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 12px 20px; /* パディングを調整 */
-  cursor: pointer;
-  margin: 0 10px; /* ボタン間のマージンを追加 */
-  font-size: 16px; /* フォントサイズを調整 */
-  font-weight: 500; /* フォントの太さを調整 */
-  transition: background-color 0.3s, transform 0.2s; /* スムーズなトランジション */
-  background-color: #0056b3; /* より落ち着いた青色に変更 */
-}
-
-.control-button:hover {
-  background-color: #e9ecef; /* ホバー時の背景色を変更 */
-  transform: scale(1.05); /* ホバー時に少し拡大 */
+button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 16px;
 }
