@@ -24,8 +24,13 @@
     "@angular/platform-browser": "^17.3.3",
     "@angular/platform-browser-dynamic": "^17.3.3",
     "@angular/router": "^17.3.3",
+    "@tensorflow-models/body-pix": "^2.2.1",
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-core": "^4.22.0",
+    "@tensorflow/tfjs-layers": "^4.22.0",
     "@zoom/videosdk": "^1.12.5",
     "@zoom/videosdk-ui-toolkit": "^1.12.1-1",
+    "long": "^5.2.3",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.4"

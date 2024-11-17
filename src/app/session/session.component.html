@@ -1,16 +1,4 @@
 <main>
-  <div class="container">
-    <div class="video-container">
-      <video #cameraVideo autoplay muted></video>
-      <span>録画画面(内カメラ)</span>
-    </div>
-    <div class="video-container">
-      <video #uploadedVideo controls></video>
-      <span>ビデオ</span>
-    </div>
-  </div>
-  <div class="controls">
-    <button (click)="startRecording()">録画開始ボタン</button>
-    <button (click)="stopRecording()">録画停止ボタン</button>
-  </div>
+  <video #cameraVideo autoplay muted></video>
+  <button (click)="captureAndSendFrame()">Capture and Send Frame</button>
 </main>

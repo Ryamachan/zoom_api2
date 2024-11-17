@@ -12,8 +12,8 @@ import { Inject } from '@angular/core';
 
 export class JoinComponent {
   sessionContainer: any;
-  authEndpoint = 'https://spiral-agent.com/api/createMeeting';
-  csrfCookieEndpoint = 'https://spiral-agent.com/api/sanctum/csrf-cookie';  // CSRFトークン取得エンドポイント
+  authEndpoint = 'https://d39pgh50coc0c9.cloudfront.net//api/createMeeting';
+  csrfCookieEndpoint = 'https://d39pgh50coc0c9.cloudfront.net//api/sanctum/csrf-cookie';  // CSRFトークン取得エンドポイント
   inSession: boolean = false;
   config = {
     videoSDKJWT: '',
