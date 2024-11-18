@@ -79,7 +79,7 @@ export class SessionComponent implements OnInit {
     // CSRFトークンを取得
     const csrfToken = this.videoService.getCookie('XSRF-TOKEN') || ''; // nullの場合は空文字を代入
 
-    this.httpClient.post('http://localhost:8000/api/process-video', formData, {
+    this.httpClient.post('https://d39pgh50coc0c9.cloudfront.net/api/process-video', formData, {
       headers: { 'X-XSRF-TOKEN': csrfToken },
       withCredentials: true
     }).subscribe(
