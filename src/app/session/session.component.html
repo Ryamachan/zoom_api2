@@ -1,7 +1,12 @@
-<main>
-  <video autoplay></video>
+<div class="video-container">
+  <div class="video-left">
+    <video #videoElement autoplay></video>
+  </div>
+  <div class="video-right">
+    <video #processedVideo autoplay></video>
+  </div>
   <div>
     <button (click)="startRecording()">録画開始</button>
     <button (click)="stopRecording()">録画停止</button>
   </div>
-</main>
+</div>

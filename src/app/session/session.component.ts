@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { VideoService } from '../services/video.service';
 import { HttpClient } from '@angular/common/http';
+import { VideoService } from '../services/video.service';
 
 @Component({
   selector: 'app-session',
@@ -26,21 +26,13 @@ export class SessionComponent implements OnInit {
   async startCamera() {
     try {
       this.videoStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-      const videoElement = document.querySelector('video');
-      if (videoElement) {
-        videoElement.srcObject = this.videoStream;
-        videoElement.play();
-      }
+      const videoElement = document.querySelector('video') as HTMLVideoElement;
+      videoElement.srcObject = this.videoStream;
+      videoElement.play();
     } catch (error) {
-      // errorがError型であることを明示的に指定
-      if ((error as Error).name === "NotReadableError") {
-        console.error("カメラがすでに使用中です。カメラを使用している他のアプリケーションを閉じてください。");
-      } else {
-        console.error("カメラアクセス中にエラーが発生しました:", error);
-      }
+      console.error('Error accessing camera:', error);
     }
   }
-
 
   // 録画開始
   startRecording() {
@@ -76,20 +68,23 @@ export class SessionComponent implements OnInit {
     const formData = new FormData();
     formData.append('frame', frameBlob, 'frame.jpg');
 
-    // CSRFトークンを取得
     const csrfToken = this.videoService.getCookie('XSRF-TOKEN') || ''; // nullの場合は空文字を代入
 
-    this.httpClient.post('https://d39pgh50coc0c9.cloudfront.net/api/process-video', formData, {
+    this.httpClient.post('http://localhost:8000/api/process-video', formData, {
       headers: { 'X-XSRF-TOKEN': csrfToken },
       withCredentials: true
     }).subscribe(
-      (response) => {
-        console.log('Processed frame response', response);
+      (response: any) => {
+        // 右側のvideo要素に処理された映像を表示
+        const processedVideo = document.querySelector('#processedVideo') as HTMLVideoElement;
+        const blob = new Blob([response.processedFrame], { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        processedVideo.src = url;
+        processedVideo.play();
       },
       (error) => {
-        console.error('Error processing frame', error);
+        console.error('Error processing frame:', error);
       }
     );
   }
-
 }
