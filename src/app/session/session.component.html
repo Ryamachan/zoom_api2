@@ -1,4 +1,7 @@
 <main>
-  <video #cameraVideo autoplay muted></video>
-  <button (click)="captureAndSendFrame()">Capture and Send Frame</button>
+  <video autoplay></video>
+  <div>
+    <button (click)="startRecording()">録画開始</button>
+    <button (click)="stopRecording()">録画停止</button>
+  </div>
 </main>

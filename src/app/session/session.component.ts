@@ -1,55 +1,95 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { VideoService } from '../services/video.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-session',
   templateUrl: './session.component.html',
   styleUrls: ['./session.component.css']
 })
-export class SessionComponent {
-  @ViewChild('cameraVideo') cameraVideo!: ElementRef<HTMLVideoElement>;
+export class SessionComponent implements OnInit {
+  private mediaRecorder!: MediaRecorder;
+  private recordedChunks: Blob[] = [];
+  private videoStream!: MediaStream;
+  private frameInterval: any;
 
-  constructor(private videoService: VideoService) {}
+  constructor(private httpClient: HttpClient, private videoService: VideoService) {}
 
-  async ngAfterViewInit() {
+  ngOnInit(): void {
+    this.startCamera();
+    this.videoService.getCsrfToken().subscribe(() => {
+      console.log('CSRF Token received and cookie set');
+    });
+  }
+
+  // カメラを起動
+  async startCamera() {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      this.cameraVideo.nativeElement.srcObject = stream;
-      this.cameraVideo.nativeElement.onloadedmetadata = () => {
-        this.cameraVideo.nativeElement.play();
-      };
+      this.videoStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      const videoElement = document.querySelector('video');
+      if (videoElement) {
+        videoElement.srcObject = this.videoStream;
+        videoElement.play();
+      }
     } catch (error) {
-      console.error('Error accessing the camera:', error);
+      // errorがError型であることを明示的に指定
+      if ((error as Error).name === "NotReadableError") {
+        console.error("カメラがすでに使用中です。カメラを使用している他のアプリケーションを閉じてください。");
+      } else {
+        console.error("カメラアクセス中にエラーが発生しました:", error);
+      }
     }
   }
 
-  async captureAndSendFrame() {
-    const videoElement = this.cameraVideo.nativeElement;
-    const canvas = document.createElement('canvas');
-    canvas.width = videoElement.videoWidth;
-    canvas.height = videoElement.videoHeight;
-    const context = canvas.getContext('2d');
 
-    if (context) {
-      context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-      canvas.toBlob((blob) => {
-        if (blob) {
-          console.log(blob);
-          console.log("Captured frame, sending to server...");
-          this.videoService.processVideoFrame(blob).subscribe(
-            response => {
-              console.log('Segmentation result:', response);
-            },
-            error => {
-              console.error('Error processing video frame:', error);
-            }
-          );
-        } else {
-          console.error('Blob creation failed');
-        }
-      }, 'image/jpeg');
-    } else {
-      console.error('Canvas context is null');
-    }
+  // 録画開始
+  startRecording() {
+    this.recordedChunks = [];
+    this.mediaRecorder = new MediaRecorder(this.videoStream, { mimeType: 'video/webm' });
+    this.mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        this.recordedChunks.push(event.data);
+      }
+    };
+    this.mediaRecorder.start(100); // 100ms ごとにフレームをキャプチャ
+    this.frameInterval = setInterval(() => this.sendFrame(), 100); // 毎秒1回フレームを送信
   }
+
+  // 録画停止
+  stopRecording() {
+    this.mediaRecorder.stop();
+    clearInterval(this.frameInterval); // 送信を停止
+  }
+
+  // 録画したフレームをサーバーに送信
+  sendFrame() {
+    if (this.recordedChunks.length === 0) return;
+
+    const frameBlob = this.recordedChunks.shift();
+
+    // `frameBlob`がundefinedでないことを確認
+    if (!frameBlob) {
+      console.error('No frame available for processing');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('frame', frameBlob, 'frame.jpg');
+
+    // CSRFトークンを取得
+    const csrfToken = this.videoService.getCookie('XSRF-TOKEN') || ''; // nullの場合は空文字を代入
+
+    this.httpClient.post('http://localhost:8000/api/process-video', formData, {
+      headers: { 'X-XSRF-TOKEN': csrfToken },
+      withCredentials: true
+    }).subscribe(
+      (response) => {
+        console.log('Processed frame response', response);
+      },
+      (error) => {
+        console.error('Error processing frame', error);
+      }
+    );
+  }
+
 }

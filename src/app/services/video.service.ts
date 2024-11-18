@@ -29,25 +29,4 @@ export class VideoService {
     return matches ? decodeURIComponent(matches[1]) : null;
   }
 
-  processVideoFrame(frameData: Blob): Observable<any> {
-    const formData = new FormData();
-    formData.append('frame', frameData, 'frame.jpg');
-
-    return this.getCsrfToken().pipe(
-      switchMap(() => {
-        // CSRFトークンを取得した後にクッキーからトークンを取得
-        const xsrfToken = this.getCookie('XSRF-TOKEN');
-        console.log('XSRF-TOKEN:', xsrfToken); // クッキーから取得したトークンを確認
-        if (!xsrfToken) {
-          console.error('XSRF-TOKEN is not found');
-        }
-        return this.httpClient.post(this.processVideoEndpoint, formData, {
-          withCredentials: true,
-          headers: {
-            'X-XSRF-TOKEN': xsrfToken || '' // ヘッダーにCSRFトークンを設定
-          }
-        });
-      })
-    );
-  }
 }
