@@ -36,6 +36,10 @@ export class SessionComponent implements OnInit {
   startCamera() {
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
       .then(stream => {
+        // オーディオストリームを無音に設定
+        const audioTracks = stream.getAudioTracks();
+        audioTracks.forEach(track => track.enabled = false);  // 音声を無効にする
+
         // カメラ映像をvideoElementに表示
         this.videoElement.nativeElement.srcObject = stream;
         this.videoElement.nativeElement.play();

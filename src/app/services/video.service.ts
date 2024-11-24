@@ -13,7 +13,7 @@ export class VideoService {
   private socket: WebSocketSubject<any>;
 
   constructor(private httpClient: HttpClient) {
-      this.socket = new WebSocketSubject('wss://d39pgh50coc0c9.cloudfront.net/api/process-video:6001'); // WebSocket接続
+      this.socket = new WebSocketSubject('wss://d39pgh50coc0c9.cloudfront.net:6001/api/process-video'); // WebSocket接続
   }
 
   getCsrfToken(): Observable<any> {
