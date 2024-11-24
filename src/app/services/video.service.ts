@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
+import { WebSocketSubject } from 'rxjs/webSocket';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,11 @@ import { switchMap, tap } from 'rxjs/operators';
 export class VideoService {
   private csrfCookieEndpoint = 'https://d39pgh50coc0c9.cloudfront.net/api/sanctum/csrf-cookie'; // CSRFトークン取得エンドポイント
   private processVideoEndpoint = 'https://d39pgh50coc0c9.cloudfront.net/api/process-video'; // ビデオ処理エンドポイント
+  private socket: WebSocketSubject<any>;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+      this.socket = new WebSocketSubject('wss://d39pgh50coc0c9.cloudfront.net/api/process-video:6001'); // WebSocket接続
+  }
 
   getCsrfToken(): Observable<any> {
     return this.httpClient.get(this.csrfCookieEndpoint, { withCredentials: true }).pipe(
@@ -29,4 +33,11 @@ export class VideoService {
     return matches ? decodeURIComponent(matches[1]) : null;
   }
 
+  sendFrame(frameData: Blob) {
+    this.socket.next(frameData); // フレームデータを送信
+  }
+
+  receiveFrame() {
+    return this.socket.asObservable(); // WebSocketから受け取る
+  }
 }
