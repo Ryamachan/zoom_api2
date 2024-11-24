@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { VideoService } from '../services/video.service';
 import { WebSocketSubject } from 'rxjs/webSocket';  // WebSocketSubjectをインポート
 
@@ -7,7 +7,7 @@ import { WebSocketSubject } from 'rxjs/webSocket';  // WebSocketSubjectをイン
   templateUrl: './session.component.html',
   styleUrls: ['./session.component.css']
 })
-export class SessionComponent implements OnInit {
+export class SessionComponent implements OnInit, AfterViewInit {
   @ViewChild('videoElement') videoElement: any;
   @ViewChild('canvasElement') canvasElement: any;
 
@@ -18,7 +18,7 @@ export class SessionComponent implements OnInit {
   constructor(private videoService: VideoService) {}
 
   ngOnInit() {
-    // `receiveFrame()` が WebSocketSubject を返すようにする
+    // 初期化処理。ViewChildがまだ参照されていないので、ここでは`nativeElement`にアクセスしません。
     this.socket = this.videoService.receiveFrame() as WebSocketSubject<any>;
 
     this.socket.subscribe(
@@ -29,18 +29,17 @@ export class SessionComponent implements OnInit {
         console.error('WebSocket error:', error);
       }
     );
+  }
 
+  // ngAfterViewInit で、@ViewChildの参照が初期化された後にアクセスする
+  ngAfterViewInit() {
     this.startCamera();
   }
 
   startCamera() {
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
       .then(stream => {
-        // オーディオストリームを無音に設定
-        const audioTracks = stream.getAudioTracks();
-        audioTracks.forEach(track => track.enabled = false);  // 音声を無効にする
-
-        // カメラ映像をvideoElementに表示
+        // `nativeElement` をngAfterViewInitで確実に初期化されてから使う
         this.videoElement.nativeElement.srcObject = stream;
         this.videoElement.nativeElement.play();
 
