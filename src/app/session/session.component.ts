@@ -87,6 +87,7 @@ export class SessionComponent implements OnInit {
         processedVideo.src = url;
         processedVideo.play();
       },
+      
       (error) => {
         console.error('Error processing frame:', error);
       }
