@@ -13,7 +13,7 @@ export class VideoService {
   private socket: WebSocketSubject<any>;
 
   constructor(private httpClient: HttpClient) {
-      this.socket = new WebSocketSubject('wss://spiral-agent.com:6001/socket/process-frame'); // WebSocket接続
+      this.socket = new WebSocketSubject('wss://spiral-agent.com:8080/socket/process-frame'); // WebSocket接続
   }
 
   getCsrfToken(): Observable<any> {
