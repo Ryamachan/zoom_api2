@@ -1,11 +1,17 @@
 <div class="video-container">
   <div class="video-left">
-    <video #videoElement autoplay></video>
+    <!-- カメラ映像を表示 -->
+    <video #videoElement autoplay style = "display:none;"></video>
+
+    <!-- カメラ映像のフレームを描画するためのCanvas -->
+    <canvas #canvasElement width="640" height="360"></canvas>
   </div>
   <div class="video-right">
+    <!-- サーバーから処理された映像を表示 -->
     <video #processedVideo autoplay></video>
   </div>
   <div>
+    <!-- 録画開始・停止ボタン -->
     <button (click)="startRecording()">録画開始</button>
     <button (click)="stopRecording()">録画停止</button>
   </div>

@@ -8,12 +8,12 @@ import { WebSocketSubject } from 'rxjs/webSocket';
   providedIn: 'root'
 })
 export class VideoService {
-  private csrfCookieEndpoint = 'https://d39pgh50coc0c9.cloudfront.net/api/sanctum/csrf-cookie'; // CSRFトークン取得エンドポイント
-  private processVideoEndpoint = 'https://d39pgh50coc0c9.cloudfront.net/api/process-video'; // ビデオ処理エンドポイント
+  private csrfCookieEndpoint = 'https://spiral-agent.com/api/sanctum/csrf-cookie'; // CSRFトークン取得エンドポイント
+  private processVideoEndpoint = 'https://spiral-agent.com/api/process-video'; // ビデオ処理エンドポイント
   private socket: WebSocketSubject<any>;
 
   constructor(private httpClient: HttpClient) {
-      this.socket = new WebSocketSubject('wss://d39pgh50coc0c9.cloudfront.net:6001/api/process-video'); // WebSocket接続
+      this.socket = new WebSocketSubject('wss://spiral-agent.com/api/process-video'); // WebSocket接続
   }
 
   getCsrfToken(): Observable<any> {
