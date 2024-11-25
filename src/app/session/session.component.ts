@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { VideoService } from '../services/video.service';
-import { WebSocketSubject } from 'rxjs/webSocket';  // WebSocketSubjectをインポート
+import { WebSocketSubject } from 'rxjs/webSocket';
 
 @Component({
   selector: 'app-session',
@@ -11,10 +11,11 @@ export class SessionComponent implements OnInit, AfterViewInit {
   @ViewChild('videoElement') videoElement: any;
   @ViewChild('canvasElement') canvasElement: any;
 
-  private socket!: WebSocketSubject<any>;  // 初期化を強制するため`!`を追加
+  private socket!: WebSocketSubject<any>;
   private mediaRecorder: MediaRecorder | null = null;
   private recordedChunks: any[] = [];
   private isRecording: boolean = false;
+  public errorMessage: string | null = null;  // エラーメッセージを格納する変数
 
   constructor(private videoService: VideoService) {}
 
@@ -25,11 +26,12 @@ export class SessionComponent implements OnInit, AfterViewInit {
     // サーバーから処理されたフレームデータを受け取る
     this.socket.subscribe(
       (frameData: Blob) => {
-        console.log("websocket work");
+        console.log("WebSocket connected successfully");
         this.displayFrameOnCanvas(frameData);  // 処理されたフレームをcanvasに表示
       },
       (error: Error) => {
         console.error('WebSocket error:', error);
+        this.errorMessage = `WebSocket Error: ${error.message}`;  // エラーメッセージの表示
       }
     );
   }
@@ -42,60 +44,49 @@ export class SessionComponent implements OnInit, AfterViewInit {
   startCamera() {
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
       .then(stream => {
-        // カメラ映像をvideoElementに表示
         if (this.videoElement && this.videoElement.nativeElement) {
           this.videoElement.nativeElement.srcObject = stream;
           this.videoElement.nativeElement.play();
         }
 
-        // canvasからストリームをキャプチャ
         if (this.canvasElement && this.canvasElement.nativeElement) {
-          const canvasStream = this.canvasElement.nativeElement.captureStream(30); // 30fpsでキャプチャ
-
-          // MediaRecorderをcanvasStreamに設定
+          const canvasStream = this.canvasElement.nativeElement.captureStream(30);
           this.mediaRecorder = new MediaRecorder(canvasStream, { mimeType: 'video/webm' });
 
-          // 録画データが収集されたら
           this.mediaRecorder.ondataavailable = (event) => {
-            this.recordedChunks.push(event.data);  // 録画データが収集される
+            this.recordedChunks.push(event.data);
           };
 
-          // 録画停止時に処理を実行
           this.mediaRecorder.onstop = () => {
-            this.saveRecordedVideo();  // 録画停止後に保存処理
+            this.saveRecordedVideo();
           };
         }
 
-        // カメラ映像をサーバーに送信して処理する
         this.captureFrame();
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error accessing camera:', error);
+        this.errorMessage = `Camera Error: ${error.name} - ${error.message}`;  // エラーメッセージの表示
       });
   }
 
-  // カメラ映像をキャプチャしてサーバーに送信
   captureFrame() {
     const canvas = this.canvasElement.nativeElement;
     const context = canvas.getContext('2d');
     const video = this.videoElement.nativeElement;
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // Canvasから画像データを取得し、サーバーに送信
     canvas.toBlob((blob: Blob) => {
-      this.sendFrameToServer(blob);  // サーバーに送信
+      this.sendFrameToServer(blob);
     });
 
-    // フレームの取得を繰り返す
     requestAnimationFrame(() => this.captureFrame());
   }
 
-  // フレームデータをサーバーに送信
   sendFrameToServer(frame: Blob) {
-    this.videoService.sendFrame(frame); // サーバーにフレームデータを送信
+    this.videoService.sendFrame(frame);
   }
 
-  // サーバーから返されたフレームをCanvasに描画
   displayFrameOnCanvas(frameData: Blob) {
     const img = new Image();
     const objectURL = URL.createObjectURL(frameData);
@@ -108,7 +99,6 @@ export class SessionComponent implements OnInit, AfterViewInit {
     };
   }
 
-  // 録画開始
   startRecording() {
     if (this.mediaRecorder && this.mediaRecorder.state === 'inactive') {
       this.mediaRecorder.start();
@@ -117,7 +107,6 @@ export class SessionComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // 録画停止
   stopRecording() {
     if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
       this.mediaRecorder.stop();
@@ -126,18 +115,15 @@ export class SessionComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // 録画データを保存
   saveRecordedVideo() {
     const blob = new Blob(this.recordedChunks, { type: 'video/webm' });
     const videoURL = URL.createObjectURL(blob);
 
-    // 録画した動画を保存
     const a = document.createElement('a');
     a.href = videoURL;
     a.download = 'recorded-video.webm';
     a.click();
 
-    // メモリの解放
     URL.revokeObjectURL(videoURL);
     this.recordedChunks = [];
   }

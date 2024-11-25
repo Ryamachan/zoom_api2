@@ -10,6 +10,9 @@
     <!-- サーバーから処理された映像を表示 -->
     <video #processedVideo autoplay></video>
   </div>
+  <div *ngIf="errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>  <!-- エラーメッセージを表示 -->
+  </div>
   <div>
     <!-- 録画開始・停止ボタン -->
     <button (click)="startRecording()">録画開始</button>
