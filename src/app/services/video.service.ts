@@ -9,11 +9,11 @@ import { WebSocketSubject } from 'rxjs/webSocket';
 })
 export class VideoService {
   private csrfCookieEndpoint = 'https://spiral-agent.com/api/sanctum/csrf-cookie'; // CSRFトークン取得エンドポイント
-  private processVideoEndpoint = 'https://spiral-agent.com/api/process-video'; // ビデオ処理エンドポイント
+  private processVideoEndpoint = 'https://spiral-agent.com/api/process-frame'; // ビデオ処理エンドポイント
   private socket: WebSocketSubject<any>;
 
   constructor(private httpClient: HttpClient) {
-      this.socket = new WebSocketSubject('wss://spiral-agent.com:6001/socket/process-video'); // WebSocket接続
+      this.socket = new WebSocketSubject('wss://spiral-agent.com:6001/socket/process-frame'); // WebSocket接続
   }
 
   getCsrfToken(): Observable<any> {
