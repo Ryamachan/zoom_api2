@@ -34,10 +34,12 @@ export class VideoService {
   }
 
   sendFrame(frameData: Blob) {
-    this.socket.next(frameData); // フレームデータを送信
+    console.log("Sending frame to server:", frameData);  // サーバーへの送信内容を確認
+    this.socket.next(frameData);  // フレームデータを送信
   }
 
   receiveFrame() {
-    return this.socket.asObservable(); // WebSocketから受け取る
+    console.log("Receiving frame data from WebSocket...");
+    return this.socket.asObservable();  // WebSocketから受け取る
   }
 }

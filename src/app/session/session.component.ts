@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { VideoService } from '../services/video.service';
 import { WebSocketSubject } from 'rxjs/webSocket';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-session',
@@ -19,19 +20,28 @@ export class SessionComponent implements OnInit, AfterViewInit {
 
   constructor(private videoService: VideoService) {}
 
+
   ngOnInit() {
     // WebSocket接続の確立
     this.socket = this.videoService.receiveFrame() as WebSocketSubject<any>;
 
-    // サーバーから処理されたフレームデータを受け取る
-    this.socket.subscribe(
+    this.socket.pipe(
+      catchError(error => {
+        console.error('WebSocket error caught:', error);  // WebSocketエラーをキャッチ
+        this.errorMessage = `WebSocket Error: ${error.message}`;  // ユーザーにエラーを表示
+        return [];
+      })
+    ).subscribe(
       (frameData: Blob) => {
-        console.log("WebSocket connected successfully");
-        this.displayFrameOnCanvas(frameData);  // 処理されたフレームをcanvasに表示
+        console.log("Received frame data from WebSocket");
+        this.displayFrameOnCanvas(frameData);
       },
       (error: Error) => {
         console.error('WebSocket error:', error);
-        this.errorMessage = `WebSocket Error: ${error.message}`;  // エラーメッセージの表示
+        this.errorMessage = `WebSocket Error: ${error.message}`;
+      },
+      () => {
+        console.log("WebSocket connection closed");
       }
     );
   }
